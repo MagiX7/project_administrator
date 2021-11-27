@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "403503315716",
+    "project_id": "project-administrator",
+    "storage_bucket": "project-administrator.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:403503315716:android:1d4e3ab982ab6b8a766e51",
+        "android_client_info": {
+          "package_name": "com.middleambient30.projectadministrator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "403503315716-2eo5o51cqa8pv9k87l2mae8slo453nsf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCj31X3WeyOwU44-UYLOcJs9U0cNZuGvQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "403503315716-2eo5o51cqa8pv9k87l2mae8slo453nsf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
