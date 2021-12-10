@@ -29,7 +29,7 @@ class _BoardScreenState extends State<BoardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Board Screen"),
+        title: const Text("Board"),
         actions: [
           ElevatedButton(
             onPressed: () {

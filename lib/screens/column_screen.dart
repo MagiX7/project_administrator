@@ -1,10 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:project_administrator/models/task.dart';
+import 'package:project_administrator/screens/create_task_screen.dart';
 
-class ColumnScreen extends StatelessWidget {
+class ColumnScreen extends StatefulWidget {
   String name;
-  List<Task> tasks = [Task(name: "OLA", priority: 5, time: DateTime.now())];
+
   ColumnScreen({Key? key, required this.name}) : super(key: key);
+
+  @override
+  State<ColumnScreen> createState() => _ColumnScreenState();
+}
+
+class _ColumnScreenState extends State<ColumnScreen> {
+  late List<Task> tasks;
+
+  @override
+  void initState() {
+    tasks = [Task(name: "OLA", priority: 5, time: DateTime.now())];
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,13 +27,33 @@ class ColumnScreen extends StatelessWidget {
           ? Container(
               color: Colors.red,
             )
-          : ListView.builder(
-              itemCount: tasks.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(tasks[index].name),
-                );
-              }),
+          : Column(
+              children: [
+                Text(widget.name),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: tasks.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(tasks[index].name),
+                      );
+                    },
+                  ),
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(
+                              builder: (context) => const CreateTaskScreen()))
+                          .then(
+                            (value) => setState(() {
+                              tasks.add(value);
+                            }),
+                          );
+                    },
+                    child: const Text("Add Task"))
+              ],
+            ),
     );
   }
 }
