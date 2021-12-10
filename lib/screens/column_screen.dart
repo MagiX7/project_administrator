@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_administrator/models/task.dart';
 import 'package:project_administrator/screens/create_task_screen.dart';
+import 'package:project_administrator/widgets/column_tile.dart';
 
 class ColumnScreen extends StatefulWidget {
   String name;
@@ -28,33 +29,45 @@ class _ColumnScreenState extends State<ColumnScreen>
           ? Container(
               color: Colors.red,
             )
-          : Column(
-              children: [
-                Text(widget.name),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: tasks.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(tasks[index].name),
-                      );
-                    },
+          : Container(
+            color: Colors.grey.shade300,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15), 
+                    child: Text(
+                      widget.name, 
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold, 
+                        fontSize: 20,
+                      ),
+                    ),
                   ),
-                ),
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(
-                              builder: (context) => const CreateTaskScreen()))
-                          .then(
-                            (value) => setState(() {
-                              tasks.add(value);
-                            }),
-                          );
-                    },
-                    child: const Text("Add Task"))
-              ],
-            ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: tasks.length,
+                      itemBuilder: (context, index) {
+                        return ColumnTile(task: tasks[index]);
+                      },
+                    ),
+                  ),
+                      ElevatedButton(
+                    
+                      onPressed: () {
+                        Navigator.of(context)
+                            .push(MaterialPageRoute(
+                                builder: (context) => const CreateTaskScreen()))
+                            .then(
+                              (value) => setState(() {
+                                tasks.add(value);
+                              }),
+                            );
+                      },
+                      child: const Text("Add Task"))
+                    ],
+                  ),
+          )
     );
   }
 
