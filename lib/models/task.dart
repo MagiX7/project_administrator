@@ -5,7 +5,7 @@ class Task {
   DateTime time;
   int priority;
 
-  Task(this.name, this.time, this.priority);
+  Task({required this.name, required this.time, required this.priority});
 
   Task.fromFirestore(Map<String, dynamic> data)
       : name = data['name'],
