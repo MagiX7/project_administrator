@@ -15,6 +15,11 @@ class _BoardScreenState extends State<BoardScreen> {
 
   @override
   void initState() {
+    columns = [
+      ColumnScreen(name: "To Do"),
+      ColumnScreen(name: "In Progress"),
+      ColumnScreen(name: "Done"),
+    ];
     pageController = PageController();
     super.initState();
   }

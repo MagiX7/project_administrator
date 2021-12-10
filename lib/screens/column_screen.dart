@@ -11,12 +11,13 @@ class ColumnScreen extends StatefulWidget {
   State<ColumnScreen> createState() => _ColumnScreenState();
 }
 
-class _ColumnScreenState extends State<ColumnScreen> {
-  late List<Task> tasks;
+class _ColumnScreenState extends State<ColumnScreen>
+    with AutomaticKeepAliveClientMixin<ColumnScreen> {
+  List<Task> tasks = [];
 
   @override
   void initState() {
-    tasks = [Task(name: "OLA", priority: 5, time: DateTime.now())];
+    tasks = [Task(name: "Add your tasks!", priority: 5, time: DateTime.now())];
     super.initState();
   }
 
@@ -56,4 +57,7 @@ class _ColumnScreenState extends State<ColumnScreen> {
             ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
