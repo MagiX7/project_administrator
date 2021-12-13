@@ -69,7 +69,7 @@ class _MainScreenState extends State<MainScreen> {
     return StreamBuilder(
       stream: boardsSnapshots("Board"),
       builder: (context, snapshot) {
-        if (snapshot.hasError) {
+        if (snapshot.hasError && !snapshot.hasData) {
           return ErrorWidget(snapshot.error.toString());
         }
         switch (snapshot.connectionState) {
@@ -83,9 +83,10 @@ class _MainScreenState extends State<MainScreen> {
                 children: [
                   Expanded(
                       child: ListView.builder(
-                          itemCount: boardList.length,
+                          itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
-                            final board = boardList[index];
+                            
+                            final board = snapshot.data![index];
                             return ListTile(
                               title: Text(board.name),
                             );
