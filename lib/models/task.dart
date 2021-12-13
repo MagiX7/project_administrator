@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class Task {
   String name;
@@ -32,6 +33,18 @@ Stream<List<Task>> columnSnapshots() {
       final data = ds.data();
       return Task.fromFirestore(data);
     }).toList();
+    return tasks;
+  });
+}
+
+Stream<List<Task>> tasksSnapshots(String docId) {
+  final db = FirebaseFirestore.instance;
+  final stream = db.collection(docId).snapshots();
+  return stream.map((querySnapshot) {
+    List<Task> tasks = [];
+    for (final doc in querySnapshot.docs) {
+      tasks.add(Task.fromFirestore(doc.data()));
+    }
     return tasks;
   });
 }

@@ -11,10 +11,12 @@ class BoardScreen extends StatefulWidget {
 
 class _BoardScreenState extends State<BoardScreen> {
   late PageController pageController;
+  late String name;
   List<ColumnScreen> columns = [];
 
   @override
   void initState() {
+    name = "New Board";
     columns = [
       ColumnScreen(name: "To Do"),
       ColumnScreen(name: "In Progress"),
@@ -34,7 +36,7 @@ class _BoardScreenState extends State<BoardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Board"),
+        title: const Text("New Board"),
         actions: [
           ElevatedButton(
             onPressed: () {
