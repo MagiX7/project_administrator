@@ -34,7 +34,6 @@ class _MainScreenState extends State<MainScreen> {
 
   void addBoard(Board board) {
     final db = FirebaseFirestore.instance;
-    // TODO: This should get the board the column belongs to and put it in here
     final doc = db.collection("Board").add({
       'name': board.name,
     });

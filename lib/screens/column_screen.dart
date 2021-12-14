@@ -18,34 +18,20 @@ class ColumnScreen extends StatefulWidget {
 
 class _ColumnScreenState extends State<ColumnScreen>
     with AutomaticKeepAliveClientMixin<ColumnScreen> {
-  List<Task> tasks = [];
-
-  @override
-  void initState() {
-    tasks = [
-      Task(
-          name: "Add your tasks!",
-          priority: 5,
-          time: DateTime.now(),
-          type: widget.name)
-    ];
-    super.initState();
-  }
-
   void newTask(Task task) {
     final db = FirebaseFirestore.instance;
-    // TODO: This should get the board the column belongs to and put it in here
     final doc = db.collection("Board/${widget.boardName}/Tasks/").add({
       'name': task.name,
       'time': DateTime.now(),
       'priority': 0,
+      'type': task.type
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: tasksSnapshots(widget.boardName),
+        stream: tasksSnapshots(widget.boardName, widget.name),
         builder: (context, AsyncSnapshot<List<Task>> snapshot) {
           if (snapshot.hasError) {
             return ErrorWidget(snapshot.error.toString());
@@ -88,10 +74,9 @@ class _ColumnScreenState extends State<ColumnScreen>
                                     builder: (context) =>
                                         const CreateTaskScreen()))
                                 .then((value) {
+                              value = value as Task;
+                              value.type = widget.name;
                               newTask(value);
-                              setState(() {
-                                tasks.add(value);
-                              });
                             });
                           },
                           child: const Text("Add Task"))

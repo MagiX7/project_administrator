@@ -27,13 +27,16 @@ class Task {
       };
 }
 
-Stream<List<Task>> tasksSnapshots(String docId) {
+Stream<List<Task>> tasksSnapshots(String docId, String columnName) {
   final db = FirebaseFirestore.instance;
   final stream = db.collection("Board/$docId/Tasks/").snapshots();
   return stream.map((querySnapshot) {
     List<Task> tasks = [];
     for (final doc in querySnapshot.docs) {
-      tasks.add(Task.fromFirestore(doc.data()));
+      Task task = Task.fromFirestore(doc.data());
+      if (task.type == columnName) {
+        tasks.add(task);
+      }
     }
     return tasks;
   });
