@@ -3,7 +3,9 @@ import 'package:project_administrator/screens/column_screen.dart';
 import 'package:project_administrator/screens/create_column_screen.dart';
 
 class BoardScreen extends StatefulWidget {
-  const BoardScreen({Key? key}) : super(key: key);
+  String name;
+
+  BoardScreen({Key? key, required this.name}) : super(key: key);
 
   @override
   State<BoardScreen> createState() => _BoardScreenState();
@@ -11,16 +13,14 @@ class BoardScreen extends StatefulWidget {
 
 class _BoardScreenState extends State<BoardScreen> {
   late PageController pageController;
-  late String name;
   List<ColumnScreen> columns = [];
 
   @override
   void initState() {
-    name = "New Board";
     columns = [
-      ColumnScreen(name: "To Do"),
-      ColumnScreen(name: "In Progress"),
-      ColumnScreen(name: "Done"),
+      ColumnScreen(name: "To Do", boardName: widget.name),
+      ColumnScreen(name: "In Progress", boardName: widget.name),
+      ColumnScreen(name: "Done", boardName: widget.name),
     ];
     pageController = PageController();
     super.initState();
@@ -36,7 +36,7 @@ class _BoardScreenState extends State<BoardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("New Board"),
+        title: Text(widget.name),
         actions: [
           ElevatedButton(
             onPressed: () {

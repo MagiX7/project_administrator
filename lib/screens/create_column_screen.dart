@@ -10,7 +10,7 @@ class CreateColumnScreen extends StatefulWidget {
 
 class _CreateColumnScreenState extends State<CreateColumnScreen> {
   late TextEditingController textController;
-  ColumnScreen column = ColumnScreen(name: "Column");
+  ColumnScreen column = ColumnScreen(name: "Column", boardName: "Hola");
 
   @override
   void initState() {

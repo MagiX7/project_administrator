@@ -10,7 +10,8 @@ class CreateTaskScreen extends StatefulWidget {
 
 class _CreateTaskScreenState extends State<CreateTaskScreen> {
   late TextEditingController textController;
-  Task task = Task(name: "Default", time: DateTime.now(), priority: 2);
+  Task task =
+      Task(name: "Default", time: DateTime.now(), priority: 2, type: "null");
 
   @override
   void initState() {

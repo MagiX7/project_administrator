@@ -3,43 +3,33 @@ import 'package:firebase_core/firebase_core.dart';
 
 class Task {
   String name;
+  String type;
   DateTime time;
   int priority;
 
-  Task({required this.name, required this.time, required this.priority});
+  Task(
+      {required this.name,
+      required this.time,
+      required this.priority,
+      required this.type});
 
   Task.fromFirestore(Map<String, dynamic> data)
       : name = data['name'],
-        time = (data['timestamp'] as Timestamp).toDate(),
-        priority = data['priority'];
+        time = (data['time'] as Timestamp).toDate(),
+        priority = data['priority'],
+        type = data['type'];
 
   Map<String, dynamic> toFirestore() => {
         'name': name,
         'time': Timestamp.fromDate(time),
         'priority': priority,
+        'type': type,
       };
-}
-
-Stream<List<Task>> columnSnapshots() {
-  final db = FirebaseFirestore.instance;
-  final stream = db
-      .collection("TaskStatusColumn")
-      .orderBy('timestamp', descending: true)
-      .snapshots();
-  return stream.map((QuerySnapshot<Map<String, dynamic>> qs) {
-    final docs = qs.docs;
-    List<Task> tasks =
-        docs.map((QueryDocumentSnapshot<Map<String, dynamic>> ds) {
-      final data = ds.data();
-      return Task.fromFirestore(data);
-    }).toList();
-    return tasks;
-  });
 }
 
 Stream<List<Task>> tasksSnapshots(String docId) {
   final db = FirebaseFirestore.instance;
-  final stream = db.collection(docId).snapshots();
+  final stream = db.collection("Board/$docId/Tasks/").snapshots();
   return stream.map((querySnapshot) {
     List<Task> tasks = [];
     for (final doc in querySnapshot.docs) {

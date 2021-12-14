@@ -24,11 +24,11 @@ class _MainScreenState extends State<MainScreen> {
     final db = FirebaseFirestore.instance;
     final stream = db.collection(id).snapshots();
     return stream.map((querySnapshot) {
-      List<Board> tasks = [];
+      List<Board> boards = [];
       for (final doc in querySnapshot.docs) {
-        tasks.add(Board.fromFirestore(doc.data()));
+        boards.add(Board.fromFirestore(doc.data()));
       }
-      return tasks;
+      return boards;
     });
   }
 
@@ -44,7 +44,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("-- Titulo app --"),
+        title: const Text("Ragebab"),
         actions: [
           IconButton(
               icon: const Icon(Icons.add),
@@ -82,15 +82,20 @@ class _MainScreenState extends State<MainScreen> {
               return Column(
                 children: [
                   Expanded(
-                      child: ListView.builder(
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: (context, index) {
-                            
-                            final board = snapshot.data![index];
-                            return ListTile(
-                              title: Text(board.name),
-                            );
-                          }))
+                    child: ListView.builder(
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          final board = snapshot.data![index];
+                          return ListTile(
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      BoardScreen(name: board.name)));
+                            },
+                            title: Text(board.name),
+                          );
+                        }),
+                  ),
                 ],
               );
             });
