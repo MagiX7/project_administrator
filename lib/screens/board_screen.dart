@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:project_administrator/screens/column_screen.dart';
 import 'package:project_administrator/screens/create_column_screen.dart';
 
+class MenuItem {
+  String name;
+  Icon icon;
+
+  MenuItem({required this.name, required this.icon});
+}
+
 class BoardScreen extends StatefulWidget {
   String name;
 
@@ -13,7 +20,11 @@ class BoardScreen extends StatefulWidget {
 
 class _BoardScreenState extends State<BoardScreen> {
   late PageController pageController;
-  List<ColumnScreen> columns = [];
+  late List<ColumnScreen> columns;
+  List<MenuItem> menuItems = [
+    MenuItem(name: "Add Column", icon: const Icon(Icons.add)),
+    MenuItem(name: "Remove Column", icon: const Icon(Icons.remove)),
+  ];
 
   @override
   void initState() {
@@ -21,6 +32,10 @@ class _BoardScreenState extends State<BoardScreen> {
       ColumnScreen(name: "To Do", boardName: widget.name),
       ColumnScreen(name: "In Progress", boardName: widget.name),
       ColumnScreen(name: "Done", boardName: widget.name),
+    ];
+    menuItems = [
+      MenuItem(name: "Add Column", icon: const Icon(Icons.add)),
+      MenuItem(name: "Remove Column", icon: const Icon(Icons.remove)),
     ];
     pageController = PageController();
     super.initState();
@@ -36,20 +51,37 @@ class _BoardScreenState extends State<BoardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.grey[850],
         title: Text(widget.name),
         actions: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(
-                      builder: (context) => const CreateColumnScreen()))
-                  .then((value) {
-                setState(() {
-                  columns.add(value);
+          PopupMenuButton<MenuItem>(
+            onSelected: (item) {
+              if (item == menuItems[0]) {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(
+                        builder: (context) => const CreateColumnScreen()))
+                    .then((value) {
+                  setState(() {
+                    columns.add(value);
+                  });
                 });
-              });
+              } else {
+                // TODO: Pop a message saying this column is not deletable
+                if (pageController.page!.toInt() > 2) {
+                  setState(() {
+                    columns.removeAt(pageController.page!.toInt());
+                  });
+                }
+              }
             },
-            child: const Text("Crear Columna"),
+            itemBuilder: (context) {
+              return menuItems.map((item) {
+                return PopupMenuItem<MenuItem>(
+                  value: item,
+                  child: Text(item.name),
+                );
+              }).toList();
+            },
           ),
         ],
       ),
