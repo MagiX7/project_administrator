@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:project_administrator/models/task.dart';
 import 'package:project_administrator/screens/create_task_screen.dart';
@@ -10,6 +11,7 @@ class ColumnScreen extends StatefulWidget {
   String boardName;
   PageController? pageController;
   String? backgroundImage;
+  int timer = 0;
 
   _ColumnScreenState columnState = _ColumnScreenState();
 
@@ -27,6 +29,7 @@ class ColumnScreen extends StatefulWidget {
 
 class _ColumnScreenState extends State<ColumnScreen>
     with AutomaticKeepAliveClientMixin<ColumnScreen> {
+  
   void newTask(Task task) {
     final db = FirebaseFirestore.instance;
     db.collection("Board/${widget.boardName}/Tasks/").add({
@@ -109,6 +112,14 @@ class _ColumnScreenState extends State<ColumnScreen>
             ],
           );
         },
+        onAccept: (Task value)
+        {
+          setState(() {
+            removeTask(value);
+            value.type = widget.name;
+            newTask(value);
+          });
+        }
       ),
     );
   }
@@ -177,9 +188,37 @@ class _ColumnScreenState extends State<ColumnScreen>
     );
   }
 
+  void doDragAndDrop(DragUpdateDetails details)
+  {
+    if (details.globalPosition.dx < 100)
+    {
+      widget.timer++;
+      if (widget.timer > 180)
+      {
+        widget.timer = 0;
+        widget.pageController!.jumpToPage(widget.pageController!.page!.toInt() - 1);
+      }
+    }
+    else if(details.globalPosition.dx > MediaQuery.of(context).size.width - 100)
+    {
+      widget.timer++;
+      if (widget.timer > 180)
+      {
+        widget.timer = 0;
+        widget.pageController!.jumpToPage(widget.pageController!.page!.toInt() + 1);
+      }
+    }
+    else
+    {
+      widget.timer = 0;
+    }
+  }
+
   Draggable<Object> buildDraggable(
       AsyncSnapshot<List<Task>> snapshot, int index) {
-    return Draggable(
+    return Draggable<Task>(
+      data: snapshot.data![index],
+      onDragUpdate: doDragAndDrop,
       child: ColumnTile(
         task: snapshot.data![index],
         heightTile: 30,
