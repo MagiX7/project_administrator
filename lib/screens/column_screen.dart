@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:project_administrator/models/task.dart';
+import 'package:project_administrator/screens/create_task_screen.dart';
 import 'package:project_administrator/widgets/column_tile.dart';
 import 'package:project_administrator/widgets/custom_button.dart';
 
@@ -63,11 +64,42 @@ class _ColumnScreenState extends State<ColumnScreen>
                           child: ListView.builder(
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index) {
-                              return ColumnTile(task: snapshot.data![index]);
+                              return Draggable(
+                                child: ColumnTile(
+                                  task: snapshot.data![index],
+                                  heightTile: 30,
+                                  widthTile: 200,
+                                ),
+                                childWhenDragging: ColumnTile(
+                                  heightTile: 50,
+                                  widthTile: 50,
+                                  task: snapshot.data![index],
+                                ),
+                                feedback: Material(
+                                  borderRadius: BorderRadius.circular(15),
+                                  child: ColumnTile(
+                                    heightTile: 10,
+                                    widthTile: 50,
+                                    task: snapshot.data![index],
+                                    colorTile: Colors.teal,
+                                  ),
+                                ),
+                              );
                             },
                           ),
                         ),
                         GestureDetector(
+                          onTap: () {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        const CreateTaskScreen()))
+                                .then((value) {
+                              value = value as Task;
+                              value.type = widget.name;
+                              newTask(value);
+                            });
+                          },
                           child: const CustomButton(),
                         )
                       ],

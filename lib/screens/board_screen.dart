@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:project_administrator/models/menu_item.dart';
 import 'package:project_administrator/screens/column_screen.dart';
 import 'package:project_administrator/screens/create_column_screen.dart';
-
-class MenuItem {
-  String name;
-  Icon icon;
-
-  MenuItem({required this.name, required this.icon});
-}
 
 class BoardScreen extends StatefulWidget {
   String name;
