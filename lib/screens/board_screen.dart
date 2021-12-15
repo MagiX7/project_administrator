@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project_administrator/models/menu_item.dart';
 import 'package:project_administrator/screens/column_screen.dart';
 import 'package:project_administrator/screens/create_column_screen.dart';
+import 'package:project_administrator/screens/select_background_screen.dart';
 
 class BoardScreen extends StatefulWidget {
   String name;
@@ -15,10 +16,7 @@ class BoardScreen extends StatefulWidget {
 class _BoardScreenState extends State<BoardScreen> {
   late PageController pageController;
   late List<ColumnScreen> columns;
-  List<MenuItem> menuItems = [
-    MenuItem(name: "Add Column", icon: const Icon(Icons.add)),
-    MenuItem(name: "Remove Column", icon: const Icon(Icons.remove)),
-  ];
+  List<MenuItem> menuItems = [];
 
   @override
   void initState() {
@@ -43,6 +41,7 @@ class _BoardScreenState extends State<BoardScreen> {
     menuItems = [
       MenuItem(name: "Add Column", icon: const Icon(Icons.add)),
       MenuItem(name: "Remove Column", icon: const Icon(Icons.remove)),
+      MenuItem(name: "Change Background", icon: const Icon(Icons.remove)),
     ];
     super.initState();
   }
@@ -103,13 +102,24 @@ class _BoardScreenState extends State<BoardScreen> {
           columns.add(value);
         });
       });
-    } else {
+    } else if (item == menuItems[1]) {
       // TODO: Pop a message saying this column is not deletable
       if (pageController.page!.toInt() > 2) {
         setState(() {
           columns.removeAt(pageController.page!.toInt());
         });
       }
+    } else if (item == menuItems[2]) {
+      Navigator.of(context)
+          .push(
+              MaterialPageRoute(builder: (context) => SelectBackgroundScreen()))
+          .then((value) {
+        setState(() {
+          for (int i = 0; i < columns.length; ++i) {
+            columns[i].name = value;
+          }
+        });
+      });
     }
   }
 }

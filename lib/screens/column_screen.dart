@@ -9,6 +9,7 @@ class ColumnScreen extends StatefulWidget {
   String name;
   String boardName;
   PageController? pageController;
+  String backgroundImage = 'galaxyBackground.jpg';
 
   ColumnScreen(
       {Key? key,
@@ -62,16 +63,33 @@ class _ColumnScreenState extends State<ColumnScreen>
 
   Widget buildScreen(AsyncSnapshot<List<Task>> snapshot) {
     return Container(
-      color: Colors.white60,
+      // color: Colors.white60,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/images/${widget.backgroundImage}'),
+          fit: BoxFit.cover,
+        ),
+      ),
       child: DragTarget(
         builder: (BuildContext context, List<Object?> candidateData,
             List<dynamic> rejectedData) {
           return Column(
-            mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.max,
             children: [
               Padding(
                 padding: const EdgeInsets.only(top: 15),
-                child: columnName(),
+                child: Container(
+                  padding: const EdgeInsets.only(top: 10, bottom: 10),
+                  margin: const EdgeInsets.only(top: 10, left: 50, right: 50),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Colors.lightBlueAccent.shade700,
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20)),
+                  ),
+                  child: columnName(),
+                ),
               ),
               Expanded(
                 child: Stack(children: [
@@ -107,18 +125,25 @@ class _ColumnScreenState extends State<ColumnScreen>
     );
   }
 
+  void setColumnBackground(String imagePath) {
+    setState(() {
+      widget.backgroundImage = imagePath;
+    });
+  }
+
   Container framework(AsyncSnapshot<List<Task>> snapshot) {
     return Container(
-      margin: const EdgeInsets.only(top: 10, bottom: 15, left: 10, right: 10),
+      margin: const EdgeInsets.only(bottom: 15, left: 50, right: 50),
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: Colors.grey[300],
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: const [
-          BoxShadow(
-              color: Colors.black38, offset: Offset(-1, -5), blurRadius: 3),
-          BoxShadow(color: Colors.black38, offset: Offset(1, 5), blurRadius: 3)
-        ],
+        color: Colors.grey[300]!.withAlpha(200),
+        borderRadius: const BorderRadius.only(
+            bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20)),
+        // boxShadow: const [
+        //   BoxShadow(
+        //       color: Colors.black38, offset: Offset(-1, -5), blurRadius: 3),
+        //   BoxShadow(color: Colors.black38, offset: Offset(1, 5), blurRadius: 3)
+        // ],
       ),
       child: buildList(snapshot),
     );
