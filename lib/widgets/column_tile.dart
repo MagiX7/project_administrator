@@ -54,6 +54,7 @@ class ColumnTile extends StatelessWidget {
                   itemBuilder: (context) {
                     return menuItems.map((item) {
                       return PopupMenuItem<MenuItem>(
+                        onTap: () => removeTask(task),
                         value: item,
                         child: SizedBox(
                           width: 75,

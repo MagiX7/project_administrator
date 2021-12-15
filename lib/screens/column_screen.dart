@@ -29,7 +29,8 @@ class _ColumnScreenState extends State<ColumnScreen>
       'name': task.name,
       'time': DateTime.now(),
       'priority': 0,
-      'type': task.type
+      'type': task.type,
+      'boardName': task.boardName
     });
   }
 
@@ -97,6 +98,7 @@ class _ColumnScreenState extends State<ColumnScreen>
               .then((value) {
             value = value as Task;
             value.type = widget.name;
+            value.boardName = widget.boardName;
             newTask(value);
           });
         },

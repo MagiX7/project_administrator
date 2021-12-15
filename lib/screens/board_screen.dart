@@ -30,9 +30,10 @@ class _BoardScreenState extends State<BoardScreen> {
         pageController: pageController,
       ),
       ColumnScreen(
-          name: "In Progress",
-          boardName: widget.name,
-          pageController: pageController),
+        name: "In Progress",
+        boardName: widget.name,
+        pageController: pageController,
+      ),
       ColumnScreen(
         name: "Done",
         boardName: widget.name,
