@@ -35,7 +35,7 @@ class _MainScreenState extends State<MainScreen> {
 
   void addBoard(Board board) {
     final db = FirebaseFirestore.instance;
-    final doc = db.collection("Board").add({
+    db.collection("Board").add({
       'name': board.name,
     });
   }

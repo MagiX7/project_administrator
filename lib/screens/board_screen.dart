@@ -67,6 +67,7 @@ class _BoardScreenState extends State<BoardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
         backgroundColor: Colors.grey[850],
         title: Text(widget.name),
@@ -90,12 +91,16 @@ class _BoardScreenState extends State<BoardScreen> {
           ),
         ],
       ),
-      body: PageView(
-        controller: pageController,
-        children: [
-          for (int i = 0; i < columns.length; ++i) columns[i],
-        ],
-      ),
+      body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/${widget.columnImage}'),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: PageView(
+            children: [for (int i = 0; i < columns.length; ++i) columns[i]],
+          )),
     );
   }
 
@@ -129,12 +134,9 @@ class _BoardScreenState extends State<BoardScreen> {
               MaterialPageRoute(builder: (context) => SelectBackgroundScreen()))
           .then((value) {
         updateBoard(widget.name, value);
-        for (int i = 0; i <= columns.length; ++i) {
-          ColumnScreen col = columns[i];
-
-          col.backgroundImage = value;
-          col.columnState.updateBackgroundImage(value);
-        }
+        setState(() {
+          widget.columnImage = value;
+        });
       });
     }
   }

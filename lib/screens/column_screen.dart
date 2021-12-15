@@ -13,11 +13,6 @@ class ColumnScreen extends StatefulWidget {
   String? backgroundImage;
   int timer = 0;
 
-  _ColumnScreenState columnState = _ColumnScreenState();
-
-  @override
-  State<ColumnScreen> createState() => columnState;
-
   ColumnScreen({
     Key? key,
     required this.name,
@@ -25,11 +20,15 @@ class ColumnScreen extends StatefulWidget {
     this.pageController,
     required this.backgroundImage,
   }) : super(key: key);
+
+  _ColumnScreenState columnState = _ColumnScreenState();
+
+  @override
+  State<ColumnScreen> createState() => columnState;
 }
 
 class _ColumnScreenState extends State<ColumnScreen>
     with AutomaticKeepAliveClientMixin<ColumnScreen> {
-  
   void newTask(Task task) {
     final db = FirebaseFirestore.instance;
     db.collection("Board/${widget.boardName}/Tasks/").add({
@@ -50,6 +49,7 @@ class _ColumnScreenState extends State<ColumnScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: StreamBuilder(
           stream: tasksSnapshots(widget.boardName, widget.name),
           builder: (context, AsyncSnapshot<List<Task>> snapshot) {
@@ -76,51 +76,47 @@ class _ColumnScreenState extends State<ColumnScreen>
   Widget buildScreen(AsyncSnapshot<List<Task>> snapshot) {
     return Container(
       // color: Colors.white60,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/images/${widget.backgroundImage}'),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: DragTarget(
-        builder: (BuildContext context, List<Object?> candidateData,
-            List<dynamic> rejectedData) {
-          return Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 15),
-                child: Container(
-                  padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  margin: const EdgeInsets.only(top: 10, left: 50, right: 50),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.lightBlueAccent.shade700,
-                    borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20)),
-                  ),
-                  child: columnName(),
+      // decoration: BoxDecoration(
+      //   image: DecorationImage(
+      //     image: AssetImage('assets/images/${widget.backgroundImage}'),
+      //     fit: BoxFit.cover,
+      //   ),
+      // ),
+      child: DragTarget(builder: (BuildContext context,
+          List<Object?> candidateData, List<dynamic> rejectedData) {
+        return Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 15),
+              child: Container(
+                padding: const EdgeInsets.only(top: 10, bottom: 10),
+                margin: const EdgeInsets.only(top: 10, left: 50, right: 50),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Colors.lightBlueAccent.shade700,
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20)),
                 ),
+                child: columnName(),
               ),
-              Expanded(
-                child: Stack(children: [
-                  framework(snapshot),
-                  addTaskButton(),
-                ]),
-              ),
-            ],
-          );
-        },
-        onAccept: (Task value)
-        {
-          setState(() {
-            removeTask(value);
-            value.type = widget.name;
-            newTask(value);
-          });
-        }
-      ),
+            ),
+            Expanded(
+              child: Stack(children: [
+                framework(snapshot),
+                addTaskButton(),
+              ]),
+            ),
+          ],
+        );
+      }, onAccept: (Task value) {
+        setState(() {
+          removeTask(value);
+          value.type = widget.name;
+          newTask(value);
+        });
+      }),
     );
   }
 
@@ -188,28 +184,23 @@ class _ColumnScreenState extends State<ColumnScreen>
     );
   }
 
-  void doDragAndDrop(DragUpdateDetails details)
-  {
-    if (details.globalPosition.dx < 100)
-    {
+  void doDragAndDrop(DragUpdateDetails details) {
+    if (details.globalPosition.dx < 100) {
       widget.timer++;
-      if (widget.timer > 180)
-      {
+      if (widget.timer > 180) {
         widget.timer = 0;
-        widget.pageController!.jumpToPage(widget.pageController!.page!.toInt() - 1);
+        widget.pageController!
+            .jumpToPage(widget.pageController!.page!.toInt() - 1);
       }
-    }
-    else if(details.globalPosition.dx > MediaQuery.of(context).size.width - 100)
-    {
+    } else if (details.globalPosition.dx >
+        MediaQuery.of(context).size.width - 100) {
       widget.timer++;
-      if (widget.timer > 180)
-      {
+      if (widget.timer > 180) {
         widget.timer = 0;
-        widget.pageController!.jumpToPage(widget.pageController!.page!.toInt() + 1);
+        widget.pageController!
+            .jumpToPage(widget.pageController!.page!.toInt() + 1);
       }
-    }
-    else
-    {
+    } else {
       widget.timer = 0;
     }
   }
