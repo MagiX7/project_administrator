@@ -12,7 +12,8 @@ class CreateColumnScreen extends StatefulWidget {
 
 class _CreateColumnScreenState extends State<CreateColumnScreen> {
   late TextEditingController textController;
-  ColumnScreen column = ColumnScreen(name: "Column", boardName: "Hola");
+  ColumnScreen column =
+      ColumnScreen(name: "Column", boardName: "Hola", backgroundImage: "");
 
   @override
   void initState() {

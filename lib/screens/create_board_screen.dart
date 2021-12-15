@@ -11,7 +11,7 @@ class CreateBoardScreen extends StatefulWidget {
 
 class _CreateBoardScreenState extends State<CreateBoardScreen> {
   late TextEditingController textController;
-  Board board = Board(name: "Default");
+  Board board = Board(name: "Default", columnImage: "");
 
   @override
   void initState() {

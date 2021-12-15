@@ -9,17 +9,20 @@ class ColumnScreen extends StatefulWidget {
   String name;
   String boardName;
   PageController? pageController;
-  String backgroundImage = 'galaxyBackground.jpg';
+  String? backgroundImage;
 
-  ColumnScreen(
-      {Key? key,
-      required this.name,
-      required this.boardName,
-      this.pageController})
-      : super(key: key);
+  _ColumnScreenState columnState = _ColumnScreenState();
 
   @override
-  State<ColumnScreen> createState() => _ColumnScreenState();
+  State<ColumnScreen> createState() => columnState;
+
+  ColumnScreen({
+    Key? key,
+    required this.name,
+    required this.boardName,
+    this.pageController,
+    required this.backgroundImage,
+  }) : super(key: key);
 }
 
 class _ColumnScreenState extends State<ColumnScreen>
@@ -32,6 +35,12 @@ class _ColumnScreenState extends State<ColumnScreen>
       'priority': 0,
       'type': task.type,
       'boardName': task.boardName
+    });
+  }
+
+  void updateBackgroundImage(String newImageName) {
+    setState(() {
+      widget.backgroundImage = newImageName;
     });
   }
 

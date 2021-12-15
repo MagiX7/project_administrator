@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:project_administrator/models/menu_item.dart';
 import 'package:project_administrator/screens/column_screen.dart';
@@ -6,11 +7,18 @@ import 'package:project_administrator/screens/select_background_screen.dart';
 
 class BoardScreen extends StatefulWidget {
   String name;
+  String columnImage;
 
-  BoardScreen({Key? key, required this.name}) : super(key: key);
+  BoardScreen({Key? key, required this.name, required this.columnImage})
+      : super(key: key);
 
   @override
   State<BoardScreen> createState() => _BoardScreenState();
+}
+
+void updateBoard(String docID, String colImage) {
+  final db = FirebaseFirestore.instance;
+  db.doc("Board/$docID").update({'columnImage': colImage});
 }
 
 class _BoardScreenState extends State<BoardScreen> {
@@ -26,18 +34,22 @@ class _BoardScreenState extends State<BoardScreen> {
         name: "To Do",
         boardName: widget.name,
         pageController: pageController,
+        backgroundImage: widget.columnImage,
       ),
       ColumnScreen(
         name: "In Progress",
         boardName: widget.name,
         pageController: pageController,
+        backgroundImage: widget.columnImage,
       ),
       ColumnScreen(
         name: "Done",
         boardName: widget.name,
         pageController: pageController,
+        backgroundImage: widget.columnImage,
       ),
     ];
+
     menuItems = [
       MenuItem(name: "Add Column", icon: const Icon(Icons.add)),
       MenuItem(name: "Remove Column", icon: const Icon(Icons.remove)),
@@ -98,8 +110,10 @@ class _BoardScreenState extends State<BoardScreen> {
         ),
       )
           .then((value) {
+        value = value as ColumnScreen;
+        value.backgroundImage = widget.columnImage;
         setState(() {
-          columns.add(value);
+          value.columns.add(value);
         });
       });
     } else if (item == menuItems[1]) {
@@ -114,11 +128,13 @@ class _BoardScreenState extends State<BoardScreen> {
           .push(
               MaterialPageRoute(builder: (context) => SelectBackgroundScreen()))
           .then((value) {
-        setState(() {
-          for (int i = 0; i < columns.length; ++i) {
-            columns[i].name = value;
-          }
-        });
+        updateBoard(widget.name, value);
+        for (int i = 0; i <= columns.length; ++i) {
+          ColumnScreen col = columns[i];
+
+          col.backgroundImage = value;
+          col.columnState.updateBackgroundImage(value);
+        }
       });
     }
   }

@@ -17,7 +17,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
-    boardList = [Board(name: "test")];
+    boardList = [Board(name: "test", columnImage: "")];
     super.initState();
   }
 
@@ -83,40 +83,7 @@ class _MainScreenState extends State<MainScreen> {
               return Column(
                 children: [
                   Expanded(
-                    child: GridView.builder(
-                      itemCount: snapshot.data!.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2),
-                      itemBuilder: (context, index) {
-                        final board = snapshot.data![index];
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    BoardScreen(name: board.name)));
-                          },
-                          child: GridTile(
-                            child: Container(
-                              margin: const EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                color: Colors.grey.shade400,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Center(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(bottom: 10),
-                                  child: Text(
-                                    board.name,
-                                    style: const TextStyle(fontSize: 28),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+                    child: buildGrid(snapshot),
                   ),
                 ],
               );
@@ -127,6 +94,51 @@ class _MainScreenState extends State<MainScreen> {
         }
         return Container();
       },
+    );
+  }
+
+  GridView buildGrid(AsyncSnapshot<List<Board>> snapshot) {
+    return GridView.builder(
+      itemCount: snapshot.data!.length,
+      gridDelegate:
+          const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+      itemBuilder: (context, index) {
+        final board = snapshot.data![index];
+        return GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => BoardScreen(
+                  name: board.name,
+                  columnImage: board.columnImage,
+                ),
+              ),
+            );
+          },
+          child: buildGridTile(board),
+        );
+      },
+    );
+  }
+
+  GridTile buildGridTile(Board board) {
+    return GridTile(
+      child: Container(
+        margin: const EdgeInsets.all(5),
+        decoration: BoxDecoration(
+          color: Colors.grey.shade400,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 10),
+            child: Text(
+              board.name,
+              style: const TextStyle(fontSize: 28),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
