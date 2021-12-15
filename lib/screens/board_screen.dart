@@ -69,7 +69,7 @@ class _BoardScreenState extends State<BoardScreen> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar(
-        backgroundColor: Colors.grey[850],
+        //backgroundColor: Colors.grey[850],
         title: Text(widget.name),
         actions: [
           PopupMenuButton<MenuItem>(
@@ -99,6 +99,7 @@ class _BoardScreenState extends State<BoardScreen> {
             ),
           ),
           child: PageView(
+            controller: pageController,
             children: [for (int i = 0; i < columns.length; ++i) columns[i]],
           )),
     );

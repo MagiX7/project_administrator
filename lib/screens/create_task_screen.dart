@@ -34,7 +34,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Add Task"),
-        backgroundColor: Colors.grey[850],
+        //backgroundColor: Colors.grey[850],
       ),
       body: Column(
         children: [

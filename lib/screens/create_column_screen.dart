@@ -31,7 +31,7 @@ class _CreateColumnScreenState extends State<CreateColumnScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.grey[850],
+        //backgroundColor: Colors.grey[850],
         title: const Text("Create new column"),
       ),
       body: Column(

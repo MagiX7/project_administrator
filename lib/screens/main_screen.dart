@@ -44,7 +44,6 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.grey[850],
         title: const Text("Ragebab"),
         actions: [
           IconButton(
