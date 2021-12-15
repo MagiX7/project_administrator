@@ -36,7 +36,7 @@ class ColumnTile extends StatelessWidget {
             boxShadow: [
               BoxShadow(
                   color: colorTile ?? Colors.black12,
-                  offset: Offset(5, 7),
+                  offset: const Offset(5, 7),
                   blurRadius: 3)
             ]),
         child: Stack(
@@ -44,6 +44,9 @@ class ColumnTile extends StatelessWidget {
             Align(
               alignment: Alignment.centerRight,
               child: PopupMenuButton<MenuItem>(
+                  color: Colors.lightBlueAccent[200]!.withAlpha(200),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
                   icon: const Icon(Icons.arrow_drop_down_outlined),
                   padding: const EdgeInsets.only(
                       bottom: 0), // DO NOT ERASE. IT WORKS
@@ -52,7 +55,15 @@ class ColumnTile extends StatelessWidget {
                     return menuItems.map((item) {
                       return PopupMenuItem<MenuItem>(
                         value: item,
-                        child: Text(item.name),
+                        child: SizedBox(
+                          width: 75,
+                          child: Center(
+                            child: Text(
+                              item.name,
+                              style: const TextStyle(color: Colors.black),
+                            ),
+                          ),
+                        ),
                       );
                     }).toList();
                   }),

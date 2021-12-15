@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:project_administrator/screens/column_screen.dart';
 
 class CreateColumnScreen extends StatefulWidget {
-  const CreateColumnScreen({Key? key}) : super(key: key);
+  PageController pageController;
+  CreateColumnScreen({Key? key, required this.pageController})
+      : super(key: key);
 
   @override
   _CreateColumnScreenState createState() => _CreateColumnScreenState();
@@ -37,6 +39,7 @@ class _CreateColumnScreenState extends State<CreateColumnScreen> {
           ElevatedButton(
               onPressed: () {
                 column.name = textController.text;
+                column.pageController = widget.pageController;
                 Navigator.of(context).pop(column);
               },
               child: const Text("Add Column"))

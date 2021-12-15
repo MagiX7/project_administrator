@@ -22,16 +22,27 @@ class _BoardScreenState extends State<BoardScreen> {
 
   @override
   void initState() {
+    pageController = PageController();
     columns = [
-      ColumnScreen(name: "To Do", boardName: widget.name),
-      ColumnScreen(name: "In Progress", boardName: widget.name),
-      ColumnScreen(name: "Done", boardName: widget.name),
+      ColumnScreen(
+        name: "To Do",
+        boardName: widget.name,
+        pageController: pageController,
+      ),
+      ColumnScreen(
+          name: "In Progress",
+          boardName: widget.name,
+          pageController: pageController),
+      ColumnScreen(
+        name: "Done",
+        boardName: widget.name,
+        pageController: pageController,
+      ),
     ];
     menuItems = [
       MenuItem(name: "Add Column", icon: const Icon(Icons.add)),
       MenuItem(name: "Remove Column", icon: const Icon(Icons.remove)),
     ];
-    pageController = PageController();
     super.initState();
   }
 
@@ -49,24 +60,12 @@ class _BoardScreenState extends State<BoardScreen> {
         title: Text(widget.name),
         actions: [
           PopupMenuButton<MenuItem>(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            color: Colors.lightBlueAccent[200]!.withAlpha(200),
             onSelected: (item) {
-              if (item == menuItems[0]) {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(
-                        builder: (context) => const CreateColumnScreen()))
-                    .then((value) {
-                  setState(() {
-                    columns.add(value);
-                  });
-                });
-              } else {
-                // TODO: Pop a message saying this column is not deletable
-                if (pageController.page!.toInt() > 2) {
-                  setState(() {
-                    columns.removeAt(pageController.page!.toInt());
-                  });
-                }
-              }
+              onSelectedMenuItem(item);
             },
             itemBuilder: (context) {
               return menuItems.map((item) {
@@ -86,5 +85,30 @@ class _BoardScreenState extends State<BoardScreen> {
         ],
       ),
     );
+  }
+
+  void onSelectedMenuItem(item) {
+    if (item == menuItems[0]) {
+      Navigator.of(context)
+          .push(
+        MaterialPageRoute(
+          builder: (context) => CreateColumnScreen(
+            pageController: pageController,
+          ),
+        ),
+      )
+          .then((value) {
+        setState(() {
+          columns.add(value);
+        });
+      });
+    } else {
+      // TODO: Pop a message saying this column is not deletable
+      if (pageController.page!.toInt() > 2) {
+        setState(() {
+          columns.removeAt(pageController.page!.toInt());
+        });
+      }
+    }
   }
 }

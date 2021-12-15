@@ -12,7 +12,8 @@ class CustomButton extends StatelessWidget {
       height: 35,
       margin: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-          color: Colors.grey[600], borderRadius: BorderRadius.circular(5)),
+          color: Colors.lightBlueAccent.shade700,
+          borderRadius: BorderRadius.circular(10)),
       child: const Center(
         child: Text(
           "Add Task",
