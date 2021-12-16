@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton({
-    Key? key,
-  }) : super(key: key);
+  final String text;
+  const CustomButton({Key? key, required this.text}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,10 +13,10 @@ class CustomButton extends StatelessWidget {
       decoration: BoxDecoration(
           color: Colors.lightBlueAccent.shade700,
           borderRadius: BorderRadius.circular(10)),
-      child: const Center(
+      child: Center(
         child: Text(
-          "Add Task",
-          style: TextStyle(
+          text,
+          style: const TextStyle(
             color: Colors.white,
           ),
         ),

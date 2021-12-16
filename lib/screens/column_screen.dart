@@ -136,7 +136,7 @@ class _ColumnScreenState extends State<ColumnScreen>
             newTask(value);
           });
         },
-        child: const CustomButton(),
+        child: const CustomButton(text: "Add Task"),
       ),
     );
   }
