@@ -82,7 +82,25 @@ Stream<List<Task>> tasksSnapshots(String docId, String columnName) {
   });
 }
 
-void removeTask(Task task) {
+void removeTask(BuildContext context, Task task) {
   final db = FirebaseFirestore.instance;
   db.doc("Board/${task.boardName}/Tasks/${task.id}").delete();
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text("${task.name} was deleted"),
+      action: SnackBarAction(
+        textColor: Colors.white,
+        label: "UNDO",
+        onPressed: () {
+          db.doc("Board/${task.boardName}/Tasks/${task.id}").set({
+            'boardName': task.boardName,
+            'name': task.name,
+            'priority': task.priority,
+            'time': task.time,
+            'type': task.type,
+          });
+        },
+      ),
+    ),
+  );
 }

@@ -43,6 +43,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white.withAlpha(200),
       appBar: AppBar(
         title: const Text("Ragebab"),
         // actions: [
