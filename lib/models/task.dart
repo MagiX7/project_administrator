@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class Task {
   String? id;
@@ -8,6 +10,7 @@ class Task {
   String boardName;
   DateTime time;
   int priority;
+  late Color colorPriority;
 
   Task({
     required this.name,
@@ -15,7 +18,22 @@ class Task {
     required this.priority,
     required this.type,
     required this.boardName,
-  });
+  }) {
+    switch (priority) {
+      case 0:
+        colorPriority = Colors.green;
+        break;
+      case 1:
+        colorPriority = Colors.yellow;
+        break;
+      case 2:
+        colorPriority = Colors.orange;
+        break;
+      case 3:
+        colorPriority = Colors.red;
+        break;
+    }
+  }
 
   Task.fromFirestore(String docId, Map<String, dynamic> data)
       : id = docId,
@@ -23,7 +41,22 @@ class Task {
         time = (data['time'] as Timestamp).toDate(),
         priority = data['priority'],
         type = data['type'],
-        boardName = data['boardName'];
+        boardName = data['boardName'] {
+    switch (priority) {
+      case 0:
+        colorPriority = Colors.green;
+        break;
+      case 1:
+        colorPriority = Colors.yellow;
+        break;
+      case 2:
+        colorPriority = Colors.orange;
+        break;
+      case 3:
+        colorPriority = Colors.red;
+        break;
+    }
+  }
 
   Map<String, dynamic> toFirestore() => {
         'name': name,

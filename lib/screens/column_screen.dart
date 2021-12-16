@@ -34,7 +34,7 @@ class _ColumnScreenState extends State<ColumnScreen>
     db.collection("Board/${widget.boardName}/Tasks/").add({
       'name': task.name,
       'time': DateTime.now(),
-      'priority': 0,
+      'priority': task.priority,
       'type': task.type,
       'boardName': task.boardName
     });
@@ -189,16 +189,18 @@ class _ColumnScreenState extends State<ColumnScreen>
       widget.timer++;
       if (widget.timer > 180) {
         widget.timer = 0;
-        widget.pageController!
-            .jumpToPage(widget.pageController!.page!.toInt() - 1);
+        widget.pageController!.previousPage(
+            duration: const Duration(seconds: 2),
+            curve: Curves.linearToEaseOut);
       }
     } else if (details.globalPosition.dx >
         MediaQuery.of(context).size.width - 100) {
       widget.timer++;
       if (widget.timer > 180) {
         widget.timer = 0;
-        widget.pageController!
-            .jumpToPage(widget.pageController!.page!.toInt() + 1);
+        widget.pageController!.nextPage(
+            duration: const Duration(seconds: 2),
+            curve: Curves.linearToEaseOut);
       }
     } else {
       widget.timer = 0;

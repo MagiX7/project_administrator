@@ -41,6 +41,16 @@ class ColumnTile extends StatelessWidget {
             ]),
         child: Stack(
           children: [
+            Container(
+              margin: const EdgeInsets.only(top: 8, left: 7),
+              alignment: Alignment.centerLeft,
+              width: 15,
+              height: 15,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(20)),
+                color: task.colorPriority,
+              ),
+            ),
             Align(
               alignment: Alignment.centerRight,
               child: PopupMenuButton<MenuItem>(

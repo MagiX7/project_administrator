@@ -34,17 +34,39 @@ class _CreateBoardScreenState extends State<CreateBoardScreen> {
       ),
       body: Column(
         children: [
-          TextField(controller: textController),
-          ElevatedButton(
-              onPressed: () {
-                // final db = FirebaseFirestore.instance;
-                // db.collection("Board/").add({
-                //   'Name': textController.text,
-                // });
-                board.name = textController.text;
-                Navigator.of(context).pop(board);
-              },
-              child: const Text("Create new board"))
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 50),
+            child: TextField(
+              controller: textController,
+            ),
+          ),
+          const Spacer(),
+          GestureDetector(
+            onTap: () {
+              // final db = FirebaseFirestore.instance;
+              // db.collection("Board/").add({
+              //   'Name': textController.text,
+              // });
+              board.name = textController.text;
+              Navigator.of(context).pop(board);
+            },
+            child: Container(
+              width: 150,
+              height: 35,
+              margin: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                  color: Colors.lightBlueAccent.shade700,
+                  borderRadius: BorderRadius.circular(10)),
+              child: const Center(
+                child: Text(
+                  "Create new board",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );

@@ -119,7 +119,7 @@ class _BoardScreenState extends State<BoardScreen> {
         value = value as ColumnScreen;
         value.backgroundImage = widget.columnImage;
         setState(() {
-          value.columns.add(value);
+          columns.add(value);
         });
       });
     } else if (item == menuItems[1]) {

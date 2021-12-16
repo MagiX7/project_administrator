@@ -2,7 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_administrator/models/task.dart';
 import 'package:project_administrator/widgets/custom_button.dart';
-import 'package:project_administrator/widgets/custom_radio_button.dart';
+
+enum TaskPriorities {
+  low,
+  medium,
+  high,
+  veryHigh,
+}
 
 class CreateTaskScreen extends StatefulWidget {
   const CreateTaskScreen({Key? key}) : super(key: key);
@@ -102,10 +108,15 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
           Expanded(
             child: Container(),
           ),
-          const Align(
+          Align(
             alignment: Alignment.bottomCenter,
-            child: CustomButton(
-              text: "Create Task",
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop(task);
+              },
+              child: const CustomButton(
+                text: "Create Task",
+              ),
             ),
           )
         ],
@@ -131,15 +142,19 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
               currentPriority = value as TaskPriorities;
               switch (currentPriority) {
                 case TaskPriorities.low:
+                  task.colorPriority = Colors.green;
                   task.priority = 0;
                   break;
                 case TaskPriorities.medium:
+                  task.colorPriority = Colors.yellow;
                   task.priority = 1;
                   break;
                 case TaskPriorities.high:
+                  task.colorPriority = Colors.orange;
                   task.priority = 2;
                   break;
                 case TaskPriorities.veryHigh:
+                  task.colorPriority = Colors.red;
                   task.priority = 3;
                   break;
               }

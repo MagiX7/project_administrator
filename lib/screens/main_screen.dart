@@ -45,21 +45,21 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Ragebab"),
-        actions: [
-          IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(
-                        builder: (context) => const CreateBoardScreen()))
-                    .then((value) {
-                  addBoard(value);
-                  setState(() {
-                    boardList.add(value);
-                  });
-                });
-              }),
-        ],
+        // actions: [
+        //   IconButton(
+        //       icon: const Icon(Icons.add),
+        //       onPressed: () {
+        //         Navigator.of(context)
+        //             .push(MaterialPageRoute(
+        //                 builder: (context) => const CreateBoardScreen()))
+        //             .then((value) {
+        //           addBoard(value);
+        //           setState(() {
+        //             boardList.add(value);
+        //           });
+        //         });
+        //       }),
+        // ],
       ),
       body: buildBoards(),
     );
@@ -125,7 +125,10 @@ class _MainScreenState extends State<MainScreen> {
       child: Container(
         margin: const EdgeInsets.all(5),
         decoration: BoxDecoration(
-          color: Colors.grey.shade400,
+          image: DecorationImage(
+            image: AssetImage('assets/images/${board.columnImage}'),
+            fit: BoxFit.cover,
+          ),
           borderRadius: BorderRadius.circular(10),
         ),
         child: Center(
@@ -133,7 +136,15 @@ class _MainScreenState extends State<MainScreen> {
             padding: const EdgeInsets.only(bottom: 10),
             child: Text(
               board.name,
-              style: const TextStyle(fontSize: 28),
+              style: const TextStyle(
+                  fontSize: 28,
+                  color: Colors.white,
+                  shadows: <Shadow>[
+                    Shadow(
+                        offset: Offset(2, 2),
+                        blurRadius: 1,
+                        color: Colors.black)
+                  ]),
             ),
           ),
         ),

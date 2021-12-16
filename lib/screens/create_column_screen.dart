@@ -12,6 +12,8 @@ class CreateColumnScreen extends StatefulWidget {
 
 class _CreateColumnScreenState extends State<CreateColumnScreen> {
   late TextEditingController textController;
+
+  int radioGroupValue = 0;
   ColumnScreen column =
       ColumnScreen(name: "Column", boardName: "Hola", backgroundImage: "");
 
@@ -31,19 +33,64 @@ class _CreateColumnScreenState extends State<CreateColumnScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        //backgroundColor: Colors.grey[850],
         title: const Text("Create new column"),
       ),
       body: Column(
         children: [
-          TextField(controller: textController),
-          ElevatedButton(
-              onPressed: () {
+          const Align(
+            alignment: Alignment.centerLeft,
+            child: Padding(
+              padding: EdgeInsets.only(left: 13, top: 15),
+              child: Text(
+                "Name",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: TextField(
+              decoration: const InputDecoration(
+                hintText: "Name",
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Colors.red, style: BorderStyle.solid, width: 30),
+                ),
+              ),
+              controller: textController,
+              mouseCursor: MouseCursor.defer,
+              onSubmitted: (text) {
                 column.name = textController.text;
                 column.pageController = widget.pageController;
                 Navigator.of(context).pop(column);
               },
-              child: const Text("Add Column"))
+              autocorrect: false,
+            ),
+          ),
+          const Spacer(),
+          GestureDetector(
+            onTap: () {
+              column.name = textController.text;
+              column.pageController = widget.pageController;
+              Navigator.of(context).pop(column);
+            },
+            child: Container(
+              width: 150,
+              height: 35,
+              margin: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                  color: Colors.lightBlueAccent.shade700,
+                  borderRadius: BorderRadius.circular(10)),
+              child: const Center(
+                child: Text(
+                  "Add column",
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
