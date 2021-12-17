@@ -15,7 +15,7 @@ class SelectBackgroundScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Change background"),
+          title: const Text("Change background"),
         ),
         body: GridView.count(
           crossAxisCount: 2,

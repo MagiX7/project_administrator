@@ -4,6 +4,7 @@ import 'package:project_administrator/models/menu_item.dart';
 
 class ColumnTile extends StatelessWidget {
   List<MenuItem> menuItems = [
+    MenuItem(name: "Rename", icon: Icon(Icons.remove)),
     MenuItem(name: "Move", icon: Icon(Icons.arrow_forward_ios_rounded)),
     MenuItem(name: "Remove", icon: Icon(Icons.remove)),
   ];
@@ -25,43 +26,38 @@ class ColumnTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25),
-      child: GestureDetector(
-        onLongPress: () {
-          removeTask(context, task);
-        },
-        child: Container(
-          height: heightTile,
-          width: widthTile,
-          //padding: const EdgeInsets.symmetric(vertical: 7),
-          margin: const EdgeInsets.only(top: 15),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(5),
-              boxShadow: [
-                BoxShadow(
-                    color: colorTile ?? Colors.black12,
-                    offset: const Offset(5, 7),
-                    blurRadius: 3)
-              ]),
-          child: Stack(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(top: 7, left: 7),
-                alignment: Alignment.centerLeft,
-                width: 15,
-                height: 15,
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(20)),
-                  color: task.colorPriority,
-                ),
+      child: Container(
+        height: heightTile,
+        width: widthTile,
+        //padding: const EdgeInsets.symmetric(vertical: 7),
+        margin: const EdgeInsets.only(top: 15),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(5),
+            boxShadow: [
+              BoxShadow(
+                  color: colorTile ?? Colors.black12,
+                  offset: const Offset(5, 7),
+                  blurRadius: 3)
+            ]),
+        child: Stack(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(top: 7, left: 7),
+              alignment: Alignment.centerLeft,
+              width: 15,
+              height: 15,
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(20)),
+                color: task.colorPriority,
               ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: buildMenuButton(),
-              ),
-              Center(child: Text(task.name)),
-            ],
-          ),
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: buildMenuButton(),
+            ),
+            Center(child: Text(task.name)),
+          ],
         ),
       ),
     );
@@ -85,6 +81,9 @@ class ColumnTile extends StatelessWidget {
     return PopupMenuItem<MenuItem>(
       onTap: () {
         switch (item.name) {
+          case "Rename":
+            //TODO: Do pertinent stuff here
+            break;
           case "Remove":
             removeTask(context, task);
             break;

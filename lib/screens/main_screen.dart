@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_administrator/models/board.dart';
 import 'package:project_administrator/screens/board_screen.dart';
-import 'package:project_administrator/screens/create_board_screen.dart';
 
 class MainScreen extends StatefulWidget {
   MainScreen({Key? key}) : super(key: key);
@@ -27,7 +26,7 @@ class _MainScreenState extends State<MainScreen> {
     return stream.map((querySnapshot) {
       List<Board> boards = [];
       for (final doc in querySnapshot.docs) {
-        boards.add(Board.fromFirestore(doc.data()));
+        boards.add(Board.fromFirestore(doc.id, doc.data()));
       }
       return boards;
     });
@@ -109,6 +108,7 @@ class _MainScreenState extends State<MainScreen> {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => BoardScreen(
+                  board: board,
                   name: board.name,
                   columnImage: board.columnImage,
                 ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_administrator/models/board.dart';
 import 'package:project_administrator/screens/column_screen.dart';
 
 class CreateColumnScreen extends StatefulWidget {
@@ -14,8 +15,10 @@ class _CreateColumnScreenState extends State<CreateColumnScreen> {
   late TextEditingController textController;
 
   int radioGroupValue = 0;
-  ColumnScreen column =
-      ColumnScreen(name: "Column", boardName: "Hola", backgroundImage: "");
+  ColumnScreen column = ColumnScreen(
+    name: "Column",
+    ownerBoard: Board(columnImage: '', name: ''),
+  );
 
   @override
   void initState() {

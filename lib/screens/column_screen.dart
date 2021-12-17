@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:project_administrator/models/board.dart';
 import 'package:project_administrator/models/task.dart';
 import 'package:project_administrator/screens/create_task_screen.dart';
 import 'package:project_administrator/widgets/column_tile.dart';
@@ -8,17 +9,17 @@ import 'package:project_administrator/widgets/custom_button.dart';
 
 class ColumnScreen extends StatefulWidget {
   String name;
-  String boardName;
+  //String boardName;
   PageController? pageController;
-  String? backgroundImage;
+  //String? backgroundImage;
   int timer = 0;
+  Board ownerBoard;
 
   ColumnScreen({
     Key? key,
     required this.name,
-    required this.boardName,
+    required this.ownerBoard,
     this.pageController,
-    required this.backgroundImage,
   }) : super(key: key);
 
   _ColumnScreenState columnState = _ColumnScreenState();
@@ -31,7 +32,7 @@ class _ColumnScreenState extends State<ColumnScreen>
     with AutomaticKeepAliveClientMixin<ColumnScreen> {
   void newTask(Task task) {
     final db = FirebaseFirestore.instance;
-    db.collection("Board/${widget.boardName}/Tasks/").add({
+    db.collection("Board/${widget.ownerBoard.name}/Tasks/").add({
       'name': task.name,
       'time': DateTime.now(),
       'priority': task.priority,
@@ -42,7 +43,7 @@ class _ColumnScreenState extends State<ColumnScreen>
 
   void updateBackgroundImage(String newImageName) {
     setState(() {
-      widget.backgroundImage = newImageName;
+      widget.ownerBoard.columnImage = newImageName;
     });
   }
 
@@ -51,7 +52,7 @@ class _ColumnScreenState extends State<ColumnScreen>
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: StreamBuilder(
-          stream: tasksSnapshots(widget.boardName, widget.name),
+          stream: tasksSnapshots(widget.ownerBoard.firebaseID!, widget.name),
           builder: (context, AsyncSnapshot<List<Task>> snapshot) {
             if (snapshot.hasError) {
               return ErrorWidget(snapshot.error.toString());
@@ -132,7 +133,7 @@ class _ColumnScreenState extends State<ColumnScreen>
               .then((value) {
             value = value as Task;
             value.type = widget.name;
-            value.boardName = widget.boardName;
+            value.boardName = widget.ownerBoard.name;
             newTask(value);
           });
         },
@@ -143,7 +144,7 @@ class _ColumnScreenState extends State<ColumnScreen>
 
   void setColumnBackground(String imagePath) {
     setState(() {
-      widget.backgroundImage = imagePath;
+      widget.ownerBoard.columnImage = imagePath;
     });
   }
 
@@ -217,16 +218,24 @@ class _ColumnScreenState extends State<ColumnScreen>
         heightTile: 30,
         widthTile: 20,
       ),
-      childWhenDragging: ColumnTile(
-        heightTile: 30,
-        widthTile: 50,
-        task: snapshot.data![index],
+      childWhenDragging: Container(
+        decoration: BoxDecoration(boxShadow: const [
+          BoxShadow(
+            color: Colors.black,
+            blurRadius: 5,
+            offset: Offset(5, 7),
+          )
+        ], color: Colors.grey, borderRadius: BorderRadius.circular(5)),
+        margin: const EdgeInsets.only(left: 25, right: 25, top: 15),
+        width: 250,
+        height: 30,
       ),
       feedback: Material(
+        color: Colors.transparent,
         borderRadius: BorderRadius.circular(15),
         child: ColumnTile(
-          heightTile: 10,
-          widthTile: 50,
+          heightTile: 30,
+          widthTile: 250,
           task: snapshot.data![index],
           colorTile: Colors.teal,
         ),
