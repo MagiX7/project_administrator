@@ -113,9 +113,8 @@ class _ColumnScreenState extends State<ColumnScreen>
         );
       }, onAccept: (Task value) {
         setState(() {
-          removeTask(context, value);
           value.type = widget.name;
-          newTask(value);
+          updateTask(value);
         });
       }),
     );
