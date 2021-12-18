@@ -64,7 +64,6 @@ class _CreateColumnScreenState extends State<CreateColumnScreen> {
               mouseCursor: MouseCursor.defer,
               onSubmitted: (text) {
                 column.name = textController.text;
-                column.pageController = widget.pageController;
                 Navigator.of(context).pop(column);
               },
               autocorrect: false,

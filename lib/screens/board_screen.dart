@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:project_administrator/models/board.dart';
 import 'package:project_administrator/models/menu_item.dart';
+import 'package:project_administrator/models/task.dart';
 import 'package:project_administrator/screens/column_screen.dart';
 import 'package:project_administrator/screens/create_column_screen.dart';
 import 'package:project_administrator/screens/select_background_screen.dart';
@@ -148,6 +149,8 @@ class _BoardScreenState extends State<BoardScreen> {
       )
           .then((value) {
         value = value as ColumnScreen;
+        value.ownerBoard = widget.board;
+        value.pageController = pageController;
         value.ownerBoard.columnImage = widget.columnImage;
         setState(() {
           columns.add(value);
