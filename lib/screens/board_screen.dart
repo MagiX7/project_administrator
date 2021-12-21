@@ -61,12 +61,35 @@ class _BoardScreenState extends State<BoardScreen> {
       ),
     ];
 
+    getColumnsData();
+
     menuItems = [
       MenuItem(name: "Add Column", icon: const Icon(Icons.add)),
       MenuItem(name: "Remove Column", icon: const Icon(Icons.remove)),
       MenuItem(name: "Change Background", icon: const Icon(Icons.remove)),
     ];
     super.initState();
+  }
+
+  void getColumnsData() async {
+    final collection = FirebaseFirestore.instance.collection('Board/');
+    final doc = collection.doc('Saludos/');
+
+    await doc.get().then((value) {
+      List<String> test = List.from(value.data()!['columns']);
+      int j = 0;
+      for (int i = 0; i < columns.length; ++i) {
+        if (columns[i].name != test[j]) {
+          ColumnScreen column = ColumnScreen(
+            name: test[i],
+            ownerBoard: widget.board,
+            pageController: pageController,
+          );
+          columns.add(column);
+          j++;
+        }
+      }
+    });
   }
 
   @override
