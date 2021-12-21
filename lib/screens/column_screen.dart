@@ -29,8 +29,6 @@ class ColumnScreen extends StatefulWidget {
 class _ColumnScreenState extends State<ColumnScreen>
     with AutomaticKeepAliveClientMixin<ColumnScreen> {
   int timer = 0;
-  bool isDragging = false;
-  DragUpdateDetails? myDetails;
 
   void newTask(Task task) {
     final db = FirebaseFirestore.instance;
@@ -211,16 +209,8 @@ class _ColumnScreenState extends State<ColumnScreen>
       AsyncSnapshot<List<Task>> snapshot, int index) {
     return Draggable<Task>(
       data: snapshot.data![index],
-      onDragStarted: () {
-        setState(() {
-          isDragging = true;
-        });
-      },
-      onDragUpdate: (details) {
-        myDetails = details;
-        doDragAndDrop(details);
-      },
-      onDragEnd: (details) => isDragging = false,
+      onDragStarted: () {},
+      onDragUpdate: doDragAndDrop,
       child: ColumnTile(
         task: snapshot.data![index],
         heightTile: 30,
