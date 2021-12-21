@@ -23,10 +23,24 @@ class ColumnTile extends StatefulWidget {
 
 class _ColumnTileState extends State<ColumnTile> {
   List<MenuItem> menuItems = [
-    MenuItem(name: "Rename", icon: Icon(Icons.remove)),
-    MenuItem(name: "Move", icon: Icon(Icons.arrow_forward_ios_rounded)),
-    MenuItem(name: "Remove", icon: Icon(Icons.remove)),
+    MenuItem(name: "Move", icon: const Icon(Icons.arrow_forward_ios_rounded)),
+    MenuItem(name: "Remove", icon: const Icon(Icons.remove)),
   ];
+
+  late TextEditingController textController;
+
+  @override
+  void initState() {
+    super.initState();
+    textController = TextEditingController();
+    textController.text = widget.task.name;
+  }
+
+  @override
+  void dispose() {
+    textController.dispose();
+    super.dispose();
+  }
 
   String dropDownValue = " ";
 
@@ -60,11 +74,27 @@ class _ColumnTileState extends State<ColumnTile> {
                 color: widget.task.colorPriority,
               ),
             ),
+            Center(
+              child: TextField(
+                maxLength: 23,
+                onTap: () {
+                  textController.selection = TextSelection.fromPosition(
+                    TextPosition(offset: widget.task.name.length),
+                  );
+                },
+                onSubmitted: (text) {
+                  widget.task.name = text;
+                  updateTask(widget.task);
+                },
+                textAlign: TextAlign.center,
+                decoration: null,
+                controller: textController,
+              ),
+            ),
             Align(
               alignment: Alignment.centerRight,
               child: buildMenuButton(),
             ),
-            Center(child: Text(widget.task.name)),
           ],
         ),
       ),
@@ -79,16 +109,14 @@ class _ColumnTileState extends State<ColumnTile> {
         padding: const EdgeInsets.only(bottom: 0), // DO NOT ERASE. IT WORKS
         onSelected: (item) {
           switch (item.name) {
-          case "Rename":
-            //TODO: Do pertinent stuff here
-            break;
-          case "Remove":
-            removeTask(context, widget.task);
-            break;
-          case "Move":
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MoveTaskScreen()));
-            break;
-        }
+            case "Remove":
+              removeTask(context, widget.task);
+              break;
+            case "Move":
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const MoveTaskScreen()));
+              break;
+          }
         },
         itemBuilder: (context) {
           return menuItems.map((item) {

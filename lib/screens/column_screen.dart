@@ -31,6 +31,7 @@ class _ColumnScreenState extends State<ColumnScreen>
   int timer = 0;
   bool isDragging = false;
   DragUpdateDetails? myDetails;
+
   void newTask(Task task) {
     final db = FirebaseFirestore.instance;
     db.collection("Board/${widget.ownerBoard.name}/Tasks/").add({

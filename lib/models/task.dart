@@ -108,5 +108,10 @@ void removeTask(BuildContext context, Task task) {
 void updateTask(Task task) {
   final db = FirebaseFirestore.instance;
   final doc = db.doc("Board/${task.boardName}/Tasks/${task.id}");
-  doc.update({'type': task.type});
+  doc.update({
+    'type': task.type,
+    'name': task.name,
+    'boardName': task.boardName,
+    'priority': task.priority,
+  });
 }

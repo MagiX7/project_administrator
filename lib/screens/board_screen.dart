@@ -121,6 +121,11 @@ class _BoardScreenState extends State<BoardScreen> {
             style: const TextStyle(color: Colors.white, fontSize: 25),
             controller: textController,
             decoration: null,
+            onTap: () {
+              textController.selection = TextSelection.fromPosition(
+                TextPosition(offset: widget.name.length),
+              );
+            },
             onSubmitted: (text) {
               widget.board.name = text;
               updateBoard(widget.board);
