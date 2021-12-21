@@ -112,6 +112,9 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
             alignment: Alignment.bottomCenter,
             child: GestureDetector(
               onTap: () {
+                if (task.name != textController.text) {
+                  task.name = textController.text;
+                }
                 Navigator.of(context).pop(task);
               },
               child: const CustomButton(

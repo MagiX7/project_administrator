@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:project_administrator/models/board.dart';
 import 'package:project_administrator/models/menu_item.dart';
-import 'package:project_administrator/models/task.dart';
 import 'package:project_administrator/screens/column_screen.dart';
 import 'package:project_administrator/screens/create_column_screen.dart';
 import 'package:project_administrator/screens/select_background_screen.dart';
@@ -87,7 +86,6 @@ class _BoardScreenState extends State<BoardScreen> {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.transparent,
         appBar: AppBar(
           title: TextField(
             style: const TextStyle(color: Colors.white, fontSize: 25),
@@ -103,16 +101,17 @@ class _BoardScreenState extends State<BoardScreen> {
           ],
         ),
         body: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/${widget.columnImage}'),
-                fit: BoxFit.cover,
-              ),
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/images/${widget.columnImage}'),
+              fit: BoxFit.cover,
             ),
-            child: PageView(
-              controller: pageController,
-              children: [for (int i = 0; i < columns.length; ++i) columns[i]],
-            )),
+          ),
+          child: PageView(
+            controller: pageController,
+            children: [for (int i = 0; i < columns.length; ++i) columns[i]],
+          ),
+        ),
       ),
     );
   }

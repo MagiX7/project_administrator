@@ -12,7 +12,7 @@ class ColumnScreen extends StatefulWidget {
   //String boardName;
   PageController? pageController;
   //String? backgroundImage;
-  int timer = 0;
+
   Board ownerBoard;
 
   ColumnScreen({
@@ -22,14 +22,15 @@ class ColumnScreen extends StatefulWidget {
     this.pageController,
   }) : super(key: key);
 
-  _ColumnScreenState columnState = _ColumnScreenState();
-
   @override
-  State<ColumnScreen> createState() => columnState;
+  State<ColumnScreen> createState() => _ColumnScreenState();
 }
 
 class _ColumnScreenState extends State<ColumnScreen>
     with AutomaticKeepAliveClientMixin<ColumnScreen> {
+  int timer = 0;
+  bool isDragging = false;
+  DragUpdateDetails? myDetails;
   void newTask(Task task) {
     final db = FirebaseFirestore.instance;
     db.collection("Board/${widget.ownerBoard.name}/Tasks/").add({
@@ -186,24 +187,22 @@ class _ColumnScreenState extends State<ColumnScreen>
 
   void doDragAndDrop(DragUpdateDetails details) {
     if (details.globalPosition.dx < 100) {
-      widget.timer++;
-      if (widget.timer > 180) {
-        widget.timer = 0;
+      timer++;
+      if (timer > 180) {
+        timer = 0;
         widget.pageController!.previousPage(
-            duration: const Duration(seconds: 2),
-            curve: Curves.linearToEaseOut);
+            duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
       }
     } else if (details.globalPosition.dx >
         MediaQuery.of(context).size.width - 100) {
-      widget.timer++;
-      if (widget.timer > 180) {
-        widget.timer = 0;
+      timer++;
+      if (timer > 180) {
+        timer = 0;
         widget.pageController!.nextPage(
-            duration: const Duration(seconds: 2),
-            curve: Curves.linearToEaseOut);
+            duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
       }
     } else {
-      widget.timer = 0;
+      timer = 0;
     }
   }
 
@@ -211,7 +210,16 @@ class _ColumnScreenState extends State<ColumnScreen>
       AsyncSnapshot<List<Task>> snapshot, int index) {
     return Draggable<Task>(
       data: snapshot.data![index],
-      onDragUpdate: doDragAndDrop,
+      onDragStarted: () {
+        setState(() {
+          isDragging = true;
+        });
+      },
+      onDragUpdate: (details) {
+        myDetails = details;
+        doDragAndDrop(details);
+      },
+      onDragEnd: (details) => isDragging = false,
       child: ColumnTile(
         task: snapshot.data![index],
         heightTile: 30,
