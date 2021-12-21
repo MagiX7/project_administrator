@@ -72,8 +72,8 @@ class _BoardScreenState extends State<BoardScreen> {
   }
 
   void getColumnsData() async {
-    final collection = FirebaseFirestore.instance.collection('Board/');
-    final doc = collection.doc('Saludos/');
+    final collection = FirebaseFirestore.instance.collection('Board');
+    final doc = collection.doc('Saludos');
 
     await doc.get().then((value) {
       List<String> test = List.from(value.data()!['columns']);
@@ -81,12 +81,19 @@ class _BoardScreenState extends State<BoardScreen> {
       for (int i = 0; i < columns.length; ++i) {
         if (columns[i].name != test[j]) {
           ColumnScreen column = ColumnScreen(
-            name: test[i],
+            name: test[j],
             ownerBoard: widget.board,
             pageController: pageController,
           );
-          columns.add(column);
-          j++;
+          setState(() {
+            columns.add(column);
+          });
+
+          if (j < test.length - 1) {
+            j++;
+          } else {
+            break;
+          }
         }
       }
     });
