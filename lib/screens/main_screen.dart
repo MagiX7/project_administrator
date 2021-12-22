@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:project_administrator/models/board.dart';
@@ -45,21 +46,14 @@ class _MainScreenState extends State<MainScreen> {
       backgroundColor: Colors.white.withAlpha(200),
       appBar: AppBar(
         title: const Text("Ragebab"),
-        // actions: [
-        //   IconButton(
-        //       icon: const Icon(Icons.add),
-        //       onPressed: () {
-        //         Navigator.of(context)
-        //             .push(MaterialPageRoute(
-        //                 builder: (context) => const CreateBoardScreen()))
-        //             .then((value) {
-        //           addBoard(value);
-        //           setState(() {
-        //             boardList.add(value);
-        //           });
-        //         });
-        //       }),
-        // ],
+        actions: [
+          IconButton(
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+            },
+            icon: const Icon(Icons.logout),
+          ),
+        ],
       ),
       body: buildBoards(),
     );
