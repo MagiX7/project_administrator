@@ -38,28 +38,31 @@ class _BoardScreenState extends State<BoardScreen> {
   late List<ColumnScreen> columns;
   List<MenuItem> menuItems = [];
 
+  void updateColumnsInBoard() {
+    final db = FirebaseFirestore.instance;
+    final doc = db.doc("Board/${widget.board.firebaseID}");
+    List<String> columnNames = [];
+    for (int i = 3; i < columns.length; ++i) {
+      columnNames.add(columns[i].name);
+    }
+    doc.update({'columns': FieldValue.arrayUnion(columnNames)});
+  }
+
+  void eliminateColumnInBoard(String value) {
+    final db = FirebaseFirestore.instance;
+    final doc = db.doc("Board/${widget.board.firebaseID}");
+    List<String> columnString = [value];
+    doc.update({
+      'columns': FieldValue.arrayRemove([value])
+    });
+  }
+
   @override
   void initState() {
     pageController = PageController();
     textController = TextEditingController();
     textController.text = widget.name;
-    columns = [
-      ColumnScreen(
-        name: "To Do",
-        pageController: pageController,
-        ownerBoard: widget.board,
-      ),
-      ColumnScreen(
-        name: "In Progress",
-        pageController: pageController,
-        ownerBoard: widget.board,
-      ),
-      ColumnScreen(
-        name: "Done",
-        pageController: pageController,
-        ownerBoard: widget.board,
-      ),
-    ];
+    columns = [];
 
     getColumnsData();
 
@@ -77,24 +80,14 @@ class _BoardScreenState extends State<BoardScreen> {
 
     await doc.get().then((value) {
       List<String> test = List.from(value.data()!['columns']);
-      int j = 0;
-      for (int i = 0; i < columns.length; ++i) {
-        if (columns[i].name != test[j]) {
-          ColumnScreen column = ColumnScreen(
-            name: test[j],
+      for (int i = 0; i < test.length; ++i) {
+        ColumnScreen column = ColumnScreen(
+            name: test[i],
             ownerBoard: widget.board,
-            pageController: pageController,
-          );
-          setState(() {
-            columns.add(column);
-          });
-
-          if (j < test.length - 1) {
-            j++;
-          } else {
-            break;
-          }
-        }
+            pageController: pageController);
+        setState(() {
+          columns.add(column);
+        });
       }
     });
   }
@@ -188,6 +181,7 @@ class _BoardScreenState extends State<BoardScreen> {
         value.ownerBoard.columnImage = widget.columnImage;
         setState(() {
           columns.add(value);
+          updateColumnsInBoard();
         });
       });
     } else if (item == menuItems[1]) {
@@ -196,6 +190,7 @@ class _BoardScreenState extends State<BoardScreen> {
         setState(() {
           columns.removeAt(pageController.page!.toInt());
         });
+        updateColumnsInBoard();
       }
     } else if (item == menuItems[2]) {
       Navigator.of(context)
