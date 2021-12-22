@@ -8,8 +8,11 @@ class ColumnTile extends StatefulWidget {
   double widthTile;
   Color? colorTile = Colors.black12;
 
+  Widget? trailing;
+
   ColumnTile(
       {required this.task,
+      this.trailing,
       Key? key,
       this.colorTile,
       required this.heightTile,
@@ -21,10 +24,6 @@ class ColumnTile extends StatefulWidget {
 }
 
 class _ColumnTileState extends State<ColumnTile> {
-  List<MenuItem> menuItems = [
-    MenuItem(name: "Remove", icon: const Icon(Icons.remove)),
-  ];
-
   late TextEditingController textController;
 
   @override
@@ -84,46 +83,12 @@ class _ColumnTileState extends State<ColumnTile> {
                 controller: textController,
               ),
             ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: buildMenuButton(),
-            ),
+            if (widget.trailing != null)
+              Align(
+                alignment: Alignment.centerRight,
+                child: widget.trailing,
+              ),
           ],
-        ),
-      ),
-    );
-  }
-
-  PopupMenuButton<MenuItem> buildMenuButton() {
-    return PopupMenuButton<MenuItem>(
-        color: Colors.lightBlueAccent[200]!.withAlpha(200),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        icon: const Icon(Icons.arrow_drop_down_outlined),
-        padding: const EdgeInsets.only(bottom: 0), // DO NOT ERASE. IT WORKS
-        onSelected: (item) {
-          switch (item.name) {
-            case "Remove":
-              removeTask(context, widget.task);
-              break;
-          }
-        },
-        itemBuilder: (context) {
-          return menuItems.map((item) {
-            return buildMenuItem(context, item);
-          }).toList();
-        });
-  }
-
-  PopupMenuItem<MenuItem> buildMenuItem(BuildContext context, MenuItem item) {
-    return PopupMenuItem<MenuItem>(
-      value: item,
-      child: SizedBox(
-        width: 75,
-        child: Center(
-          child: Text(
-            item.name,
-            style: const TextStyle(color: Colors.black),
-          ),
         ),
       ),
     );

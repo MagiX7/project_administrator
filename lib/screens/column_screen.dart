@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:project_administrator/models/board.dart';
+import 'package:project_administrator/models/menu_item.dart';
 import 'package:project_administrator/models/task.dart';
 import 'package:project_administrator/screens/create_task_screen.dart';
 import 'package:project_administrator/widgets/column_tile.dart';
@@ -29,6 +30,10 @@ class ColumnScreen extends StatefulWidget {
 class _ColumnScreenState extends State<ColumnScreen>
     with AutomaticKeepAliveClientMixin<ColumnScreen> {
   int timer = 0;
+
+  List<MenuItem> menuItems = [
+    MenuItem(name: "Remove", icon: const Icon(Icons.remove)),
+  ];
 
   void newTask(Task task) {
     final db = FirebaseFirestore.instance;
@@ -214,6 +219,7 @@ class _ColumnScreenState extends State<ColumnScreen>
       onDragStarted: () {},
       onDragUpdate: doDragAndDrop,
       child: ColumnTile(
+        trailing: buildMenuButton(snapshot.data![index]),
         task: snapshot.data![index],
         heightTile: 30,
         widthTile: 20,
@@ -238,6 +244,39 @@ class _ColumnScreenState extends State<ColumnScreen>
           widthTile: 250,
           task: snapshot.data![index],
           colorTile: Colors.teal,
+        ),
+      ),
+    );
+  }
+
+  PopupMenuButton<MenuItem> buildMenuButton(Task task) {
+    return PopupMenuButton<MenuItem>(
+        color: Colors.lightBlueAccent[200]!.withAlpha(200),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        icon: const Icon(Icons.arrow_drop_down_outlined),
+        padding: const EdgeInsets.only(bottom: 0), // DO NOT ERASE. IT WORKS
+        onSelected: (item) {
+          setState(() {
+            removeTask(context, task);
+          });
+        },
+        itemBuilder: (context) {
+          return menuItems.map((item) {
+            return buildMenuItem(context, item);
+          }).toList();
+        });
+  }
+
+  PopupMenuItem<MenuItem> buildMenuItem(BuildContext context, MenuItem item) {
+    return PopupMenuItem<MenuItem>(
+      value: item,
+      child: SizedBox(
+        width: 75,
+        child: Center(
+          child: Text(
+            item.name,
+            style: const TextStyle(color: Colors.black),
+          ),
         ),
       ),
     );
