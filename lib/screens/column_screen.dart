@@ -37,7 +37,7 @@ class _ColumnScreenState extends State<ColumnScreen>
 
   void newTask(Task task) {
     final db = FirebaseFirestore.instance;
-    db.collection("Board/${widget.ownerBoard.name}/Tasks/").add({
+    db.collection("Board/${widget.ownerBoard.firebaseID}/Tasks/").add({
       'name': task.name,
       'time': DateTime.now(),
       'priority': task.priority,
@@ -257,7 +257,7 @@ class _ColumnScreenState extends State<ColumnScreen>
         padding: const EdgeInsets.only(bottom: 0), // DO NOT ERASE. IT WORKS
         onSelected: (item) {
           setState(() {
-            removeTask(context, task);
+            removeTask(context, task, widget.ownerBoard);
           });
         },
         itemBuilder: (context) {

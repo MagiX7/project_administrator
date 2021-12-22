@@ -76,7 +76,7 @@ class _BoardScreenState extends State<BoardScreen> {
 
   void getColumnsData() async {
     final collection = FirebaseFirestore.instance.collection('Board');
-    final doc = collection.doc('Saludos');
+    final doc = collection.doc(widget.board.firebaseID);
 
     await doc.get().then((value) {
       List<String> test = List.from(value.data()!['columns']);
@@ -136,6 +136,8 @@ class _BoardScreenState extends State<BoardScreen> {
             ),
           ),
           child: PageView(
+            physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics()),
             controller: pageController,
             children: [for (int i = 0; i < columns.length; ++i) columns[i]],
           ),

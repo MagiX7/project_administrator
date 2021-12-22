@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:project_administrator/models/board.dart';
 
 class Task {
   String? id;
@@ -82,9 +83,9 @@ Stream<List<Task>> tasksSnapshots(String docId, String columnName) {
   });
 }
 
-void removeTask(BuildContext context, Task task) {
+void removeTask(BuildContext context, Task task, Board board) {
   final db = FirebaseFirestore.instance;
-  db.doc("Board/${task.boardName}/Tasks/${task.id}").delete();
+  db.doc("Board/${board.firebaseID}/Tasks/${task.id}").delete();
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text("${task.name} was deleted"),
