@@ -133,7 +133,9 @@ class _ColumnScreenState extends State<ColumnScreen>
             value = value as Task;
             value.type = widget.name;
             value.boardName = widget.ownerBoard.name;
-            newTask(value);
+            setState(() {
+              newTask(value);
+            });
           });
         },
         child: const CustomButton(text: "Add Task"),
