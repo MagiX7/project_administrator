@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project_administrator/models/task.dart';
 import 'package:project_administrator/models/menu_item.dart';
-import 'package:project_administrator/screens/move_task_screen.dart';
 
 class ColumnTile extends StatefulWidget {
   Task task;
@@ -23,7 +22,6 @@ class ColumnTile extends StatefulWidget {
 
 class _ColumnTileState extends State<ColumnTile> {
   List<MenuItem> menuItems = [
-    MenuItem(name: "Move", icon: const Icon(Icons.arrow_forward_ios_rounded)),
     MenuItem(name: "Remove", icon: const Icon(Icons.remove)),
   ];
 
@@ -76,12 +74,7 @@ class _ColumnTileState extends State<ColumnTile> {
             ),
             Center(
               child: TextField(
-                maxLength: 23,
-                onTap: () {
-                  textController.selection = TextSelection.fromPosition(
-                    TextPosition(offset: widget.task.name.length),
-                  );
-                },
+                maxLength: 18,
                 onSubmitted: (text) {
                   widget.task.name = text;
                   updateTask(widget.task);
@@ -111,10 +104,6 @@ class _ColumnTileState extends State<ColumnTile> {
           switch (item.name) {
             case "Remove":
               removeTask(context, widget.task);
-              break;
-            case "Move":
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const MoveTaskScreen()));
               break;
           }
         },

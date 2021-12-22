@@ -22,7 +22,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
   Task task = Task(
       name: "Default",
       time: DateTime.now(),
-      priority: 2,
+      priority: 0,
       type: "null",
       boardName: "null");
 
@@ -64,6 +64,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
           Padding(
             padding: const EdgeInsets.all(10.0),
             child: TextField(
+              maxLength: 18,
               decoration: const InputDecoration(
                 hintText: "Name",
                 border: OutlineInputBorder(
