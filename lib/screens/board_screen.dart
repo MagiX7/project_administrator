@@ -185,13 +185,11 @@ class _BoardScreenState extends State<BoardScreen> {
         });
       });
     } else if (item == menuItems[1]) {
-      // TODO: Pop a message saying this column is not deletable
-      if (pageController.page!.toInt() > 2) {
-        setState(() {
-          columns.removeAt(pageController.page!.toInt());
-        });
-        updateColumnsInBoard();
-      }
+      String columnName = columns.elementAt(pageController.page!.toInt()).name;
+      eliminateColumnInBoard(columnName);
+      setState(() {
+        columns.removeAt(pageController.page!.toInt());
+      });
     } else if (item == menuItems[2]) {
       Navigator.of(context)
           .push(
